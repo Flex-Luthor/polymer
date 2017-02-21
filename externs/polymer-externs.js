@@ -15,7 +15,8 @@ function Polymer(init){}
  */
 
 /**
- * @type {Object<string, ({
+ * @typedef {{
+ * properties: Object<string, ({
  *   value: *,
  *   type: (Function | undefined),
  *   readOnly: (boolean | undefined),
@@ -23,7 +24,9 @@ function Polymer(init){}
  *   reflectToAttribute: (boolean | undefined),
  *   notify: (boolean | undefined),
  *   observer: (string | undefined)
- * })>}
+ * } | Function)>,
+ * observers: (!Array<string> | undefined)
+ * }}
  */
 let ElementConfiguration;
 
