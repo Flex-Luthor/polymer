@@ -8,3 +8,31 @@
  * @return {!CustomElement}
  */
 function Polymer(init){}
+
+/**
+ * @fileoverview Externs for PolymerPass
+ * @externs
+ */
+
+/**
+ * @type {Object<string, ({
+ *   value: *,
+ *   type: (Function | undefined),
+ *   readOnly: (boolean | undefined),
+ *   computed: (string | undefined),
+ *   reflectToAttribute: (boolean | undefined),
+ *   notify: (boolean | undefined),
+ *   observer: (string | undefined)
+ * })>}
+ */
+let ElementConfiguration;
+
+/**
+ * @typedef {{
+ *   is: string,
+ *   extends: (string | undefined),
+ *   config: (ElementConfiguration | undefined),
+ *   template: (HTMLTemplateElement | undefined)
+ * }}
+ */
+let PolymerElementInterface;
