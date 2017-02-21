@@ -10,11 +10,6 @@
 function Polymer(init){}
 
 /**
- * @fileoverview Externs for PolymerPass
- * @externs
- */
-
-/**
  * @typedef {{
  * properties: (Object<string, ({
  *   value: *,
