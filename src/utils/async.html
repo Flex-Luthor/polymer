@@ -10,106 +10,186 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="boot.html">
 
 <script>
-(function(global) {
-
+{
   'use strict';
 
-  Polymer.Async = {};
-
   /**
-   * A timer with the async interface.
+   * TODOC
+   *
+   * @namespace
+   * @memberof Polymer
    */
-  Polymer.Async.timeOut = {
-    after: function(delay) {
-      return delay === 0 ? Polymer.Async.timeOut :
-      {
-        run: function(fn) {
-          return global.setTimeout(fn, delay);
-        },
-        cancel: global.clearTimeout.bind(global)
-      }
-    },
-    run: global.setTimeout.bind(global),
-    cancel: global.clearTimeout.bind(global)
-  };
+  Polymer.Async = {
 
-  /**
-   * requestAnimationFrame with the async interface.
-   */
-  Polymer.Async.animationFrame = {
-    run:  global.requestAnimationFrame.bind(global),
-    cancel: global.cancelAnimationFrame.bind(global)
-  };
-
-  /**
-   * requestIdleCallback with the async interface.
-   */
-  Polymer.Async.idlePeriod = {
-    run(fn) {
-      return global.requestIdleCallback ? global.requestIdleCallback(fn) : global.setTimeout(fn, 16);
-    },
-    cancel(timer) {
-      return global.cancelIdleCallback ? global.cancelIdleCallback(timer) : global.clearTimeout(timer);
-    }
-  };
-
-  /**
-   * Micro task with the async interface.
-   */
-  Polymer.Async.microTask = {
-    _currVal: 0,
-    _lastVal: 0,
-    _callbacks: [],
-    _twiddleContent: 0,
-    _twiddle: document.createTextNode(''),
-
-    run(callback) {
-      this._twiddle.textContent = this._twiddleContent++;
-      this._callbacks.push(callback);
-      return this._currVal++;
-    },
-
-    cancel(handle) {
-      const idx = handle - this._lastVal;
-      if (idx >= 0) {
-        if (!this._callbacks[idx]) {
-          throw 'invalid async handle: ' + handle;
+    /**
+     * A timer with the async interface.
+     *
+     * TODOC
+     *
+     * @namespace
+     * @memberof Polymer.Async
+     */
+    timeOut: {
+      /**
+       * TODOC
+       *
+       * @memberof Polymer.Async.timeOut
+       */
+      after(delay) {
+        return  {
+          run(fn) { setTimeout(fn, delay) },
+          cancel: window.setTimeout.bind(window)
         }
-        this._callbacks[idx] = null;
+      },
+      /**
+       * TODOC
+       *
+       * @memberof Polymer.Async.timeOut
+       */
+      run: window.setTimeout.bind(window),
+      /**
+       * TODOC
+       *
+       * @memberof Polymer.Async.timeOut
+       */
+      cancel: window.setTimeout.bind(window)
+    },
+
+    /**
+     * requestAnimationFrame with the async interface.
+     *
+     * TODOC
+     *
+     * @namespace
+     * @memberof Polymer.Async
+     */
+    animationFrame: {
+      /**
+       * TODOC
+       *
+       * @memberof Polymer.Async.timeOut
+       */
+      run: window.requestAnimationFrame.bind(window),
+      /**
+       * TODOC
+       *
+       * @memberof Polymer.Async.timeOut
+       */
+      cancel: window.cancelAnimationFrame.bind(window)
+    },
+
+    /**
+     * requestIdleCallback with the async interface.
+     *
+     * TODOC
+     *
+     * @namespace
+     * @memberof Polymer.Async
+     */
+    idlePeriod: {
+      /**
+       * TODOC
+       *
+       * @memberof Polymer.Async.timeOut
+       */
+      run(fn) {
+        return window.requestIdleCallback ?
+          window.requestIdleCallback(fn) :
+          window.setTimeout(fn, 16);
+      },
+      /**
+       * TODOC
+       *
+       * @memberof Polymer.Async.timeOut
+       */
+      cancel(timer) {
+        return window.cancelIdleCallback ?
+          window.cancelIdleCallback(timer) :
+          window.clearTimeout(timer);
       }
     },
 
-    _atEndOfMicrotask() {
-      const len = this._callbacks.length;
-      for (let i=0; i<len; i++) {
-        let cb = this._callbacks[i];
-        if (cb) {
-          try {
-            cb();
-          } catch(e) {
-            // Clear queue up to this point & start over after throwing
-            i++;
-            this._callbacks.splice(0, i);
-            this._lastVal += i;
-            this._twiddle.textContent = this._twiddleContent++;
-            throw e;
+    /**
+     * Micro task with the async interface.
+     *
+     * TODOC
+     *
+     * @namespace
+     * @memberof Polymer.Async
+     */
+    microTask: {
+      _currVal: 0,
+      _lastVal: 0,
+      _callbacks: [],
+      _twiddleContent: 0,
+      _twiddle: document.createTextNode(''),
+
+      /**
+       * TODOC
+       *
+       * @memberof Polymer.Async.timeOut
+       */
+      run(callback) {
+        this._twiddle.textContent = this._twiddleContent++;
+        this._callbacks.push(callback);
+        return this._currVal++;
+      },
+
+      /**
+       * TODOC
+       *
+       * @memberof Polymer.Async.timeOut
+       */
+      cancel(handle) {
+        const idx = handle - this._lastVal;
+        if (idx >= 0) {
+          if (!this._callbacks[idx]) {
+            throw 'invalid async handle: ' + handle;
+          }
+          this._callbacks[idx] = null;
+        }
+      },
+
+      _atEndOfMicrotask() {
+        const len = this._callbacks.length;
+        for (let i=0; i<len; i++) {
+          let cb = this._callbacks[i];
+          if (cb) {
+            try {
+              cb();
+            } catch(e) {
+              // Clear queue up to this point & start over after throwing
+              i++;
+              this._callbacks.splice(0, i);
+              this._lastVal += i;
+              this._twiddle.textContent = this._twiddleContent++;
+              throw e;
+            }
           }
         }
-      }
-      this._callbacks.splice(0, len);
-      this._lastVal += len;
-    },
+        this._callbacks.splice(0, len);
+        this._lastVal += len;
+      },
 
-    flush() {
-      this._observer.takeRecords();
-      this._atEndOfMicrotask();
+      /**
+       * TODOC
+       *
+       * @memberof Polymer.Async.timeOut
+       */
+      flush() {
+        this._observer.takeRecords();
+        this._atEndOfMicrotask();
+      },
+
+      _observer: new window.MutationObserver(function microTaskObserver() {
+        Polymer.Async.microTask._atEndOfMicrotask();
+      })
+
     }
   };
 
-  Polymer.Async.microTask._observer = new window.MutationObserver(function microTaskObserver() {
-    Polymer.Async.microTask._atEndOfMicrotask();
-  });
-  Polymer.Async.microTask._observer.observe(Polymer.Async.microTask._twiddle, {characterData: true});
+  Polymer.Async.microTask._observer.observe(
+    Polymer.Async.microTask._twiddle, {characterData: true});
 
-})(this);
+}
 </script>

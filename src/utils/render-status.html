@@ -48,8 +48,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     queue.length = 0;
   }
 
+  /**
+   * TODOC
+   *
+   * @namespace
+   * @memberof Polymer
+   */
   Polymer.RenderStatus = {
 
+    /**
+     * TODOC
+     *
+     * @memberof Polymer.RenderStatus
+     */
     beforeNextRender: function(context, callback, args) {
       if (!scheduled) {
         schedule();
@@ -57,6 +68,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       beforeRenderQueue.push([context, callback, args]);
     },
 
+    /**
+     * TODOC
+     *
+     * @memberof Polymer.RenderStatus
+     */
     afterNextRender: function(context, callback, args) {
       if (!scheduled) {
         schedule();

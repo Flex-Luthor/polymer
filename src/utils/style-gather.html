@@ -12,8 +12,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 (function() {
   'use strict';
 
-  let MODULE_STYLES_SELECTOR = 'style, link[rel=import][type~=css], template';
-  let INCLUDE_ATTR = 'include';
+  const MODULE_STYLES_SELECTOR = 'style, link[rel=import][type~=css], template';
+  const INCLUDE_ATTR = 'include';
 
   function importModule(moduleId) {
     if (!Polymer.DomModule) {
@@ -22,9 +22,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     return Polymer.DomModule.import(moduleId);
   }
 
-  let StyleGather = {
+  /**
+   * TODOC
+   *
+   * @namespace
+   * @memberof Polymer
+   */
+  const StyleGather = {
 
     /**
+     * TODOC
+     *
+     * @memberof Polymer.StyleGather
      * @param {string} moduleIds
      * @param {boolean=} warnIfNotFound
      * @return {string}
@@ -38,8 +47,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       return cssText;
     },
 
-    // returns cssText of styles in a given module; also un-applies any
-    // styles that apply to the document.
+    /**
+     * returns cssText of styles in a given module; also un-applies any
+     * styles that apply to the document.
+     *
+     * TODOC
+     *
+     * @memberof Polymer.StyleGather
+     */
     cssFromModule(moduleId, warnIfNotFound) {
       let m = importModule(moduleId);
       if (m && !m._cssText) {
@@ -51,7 +66,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       return m && m._cssText || '';
     },
 
-    // support lots of ways to discover css...
+    /**
+     * support lots of ways to discover css...
+     *
+     * TODOC
+     *
+     * @memberof Polymer.StyleGather
+     */
     cssFromElement(element) {
       let cssText = '';
       // if element is a template, get content from its .content
